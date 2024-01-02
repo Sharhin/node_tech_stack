@@ -33,7 +33,7 @@ function TodoRoutes(fastify) {
         properties: {
           name: { type: "string" },
           description: { type: "string" }
-        }
+        },
       },
     },
     handler: async function (req, res) {
@@ -56,23 +56,52 @@ function TodoRoutes(fastify) {
         properties: {
           name: { type: "string" },
           description: { type: "string" }
-        }
+        },
       },
     },
     handler: async function (req, res) {
       const { name, description } = req.body;
-      console.log(req.body);
       const todo = this.mongo.db.collection('todo');
       const _id = new this.mongo.ObjectId(req.params.id)
-      const result = await todo.updateOne(
+      await todo.updateOne(
         {
           _id
         },
         {
           $set: { name, description }
-
         });
-      console.log("result", result)
+      return await todo.findOne({ _id });
+    }
+  });
+
+  fastify.route({
+    method: 'PATCH',
+    url: putUrl,
+    schema: {
+      body: {
+        type: 'object',
+        required: ['name'],
+        properties: {
+          name: { type: "string" },
+          description: { type: "string" }
+        },
+        additionalProperties: false,
+      },
+    },
+    handler: async function (req, res) {
+      req.body;
+      const key = Object.keys(req.body)[0];
+      const value = req.body[key];
+
+      const todo = this.mongo.db.collection('todo');
+      const _id = new this.mongo.ObjectId(req.params.id)
+      await todo.updateOne(
+        {
+          _id
+        },
+        {
+          $set: { [key]: value }
+        });
       return await todo.findOne({ _id });
     }
   });
@@ -83,14 +112,8 @@ function TodoRoutes(fastify) {
     handler: async function (req, res) {
       const todo = this.mongo.db.collection('todo');
       const _id = new this.mongo.ObjectId(req.params.id)
-      const result = await todo.deleteOne(
-        {
-          _id
-        },
-      );
-      console.log("result", result)
       return { deleted: _id }
-    }
+    },
   });
 }
 

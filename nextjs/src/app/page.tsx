@@ -8,7 +8,7 @@ export default function Home() {
 
   return (
     <main className={styles.main}>
-      Please log in
+      Please log in?
       <Link href="/api/auth/signin">Sign in</Link>
     </main>
   )

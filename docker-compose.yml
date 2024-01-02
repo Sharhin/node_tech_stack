@@ -1,43 +1,68 @@
 version: '3.8'
 services:
-  nestjsdb:
-    container_name: nestjsdb
-    image: postgres
+  # nestjsdb:
+  #   container_name: nestjsdb
+  #   image: postgres
+  #   restart: always
+  #   ports:
+  #     - 54321:5432
+  #   environment:
+  #     POSTGRES_USER: nestjs
+  #     POSTGRES_PASSWORD: nestjs
+  #     POSTGRES_DB: nestjs
+  #   volumes:
+  #     - ./data/default.sql:/docker-entrypoint-initdb.d/db.sql
+  #     - nestjs-db-data:/var/lib/postgresql/data
+
+  fastifydbmongo:
+    container_name: fastifydbmongo
+    image:  mongo:4
     restart: always
     ports:
-      - 54321:5432
+      - 27017:27017
     environment:
-      POSTGRES_USER: nestjs
-      POSTGRES_PASSWORD: nestjs
-      POSTGRES_DB: nestjs
+      - AUTH=yes
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=password
     volumes:
-      - ./data/default.sql:/docker-entrypoint-initdb.d/db.sql
-      - nestjs-db-data:/var/lib/postgresql/data
+      - ./data/defaultMongo.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - mongodb-dev:/data/db  
 
-  nestjsapp:
-    container_name: nestjsapp
-    build:
-      dockerfile: Dockerfile
-      context: "./nestjs"
-    ports:
-      - 3001:3000  
-    depends_on:
-      - nestjsdb
+  # nestjsapp:
+  #   container_name: nestjsapp
+  #   build:
+  #     dockerfile: Dockerfile
+  #     context: "./nestjs"
+  #   ports:
+  #     - 3001:3000  
+  #   depends_on:
+  #     - nestjsdb
 
-  nextjsdb:
-    container_name: nextjsdb
-    image: postgres
-    restart: always
-    ports:
-      - 54322:5432
-    environment:
-      POSTGRES_USER: nextjs
-      POSTGRES_PASSWORD: nextjs
-      POSTGRES_DB: nextjs  
-    volumes:
-      - ./data/default.sql:/docker-entrypoint-initdb.d/db.sql
-      - nextjs-db-data:/var/lib/postgresql/data
+  # nextjsdb:
+  #   container_name: nextjsdb
+  #   image: postgres
+  #   restart: always
+  #   ports:
+  #     - 54322:5432
+  #   environment:
+  #     POSTGRES_USER: nextjs
+  #     POSTGRES_PASSWORD: nextjs
+  #     POSTGRES_DB: nextjs  
+  #   volumes:
+  #     - ./data/default.sql:/docker-entrypoint-initdb.d/db.sql
+  #     - nextjs-db-data:/var/lib/postgresql/data
+
+  # nextjsapp:
+  #   container_name: nextjsapp
+  #   build:
+  #     dockerfile: Dockerfile
+  #     context: "./nextjs"
+  #   ports:
+  #     - 3002:3000  
+  #   depends_on:
+  #     - nextjsdb
 
 volumes:
   nestjs-db-data:
   nextjs-db-data:
+  mongodb-dev:

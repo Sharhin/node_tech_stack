@@ -40,22 +40,11 @@ export default function Todo() {
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     const formData = new FormData(event.currentTarget);
     const values = Object.fromEntries(formData.entries());
-    console.log(" JSON.stringify(values)", JSON.stringify(values))
     const response = await requestApi(CreateTodoRequest, JSON.stringify(values));
-
-    // const response = await fetch('/api/todo', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(values),
-    // });
   }
 
   if (!session?.user)
     redirect('/');
-
-  console.log("list", list)
 
   return (
     <main >
