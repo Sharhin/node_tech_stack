@@ -16,18 +16,15 @@ import {Box}  from "@mui/material";
 export default function NewsAdminPage(){
   const [rows,setRows] = useState<NewsType[]>([]);
 
-
-  useEffect(()=>{
-    console.log("co?")
-    getData(); 
-  },[])
-
   const getData = useCallback(async ()=>{
     const response = await requestApi({url: '/api/news',method:"GET"});
     const rows = await response.json();
-    console.log("rows",rows);
     setRows(rows);
   },[])
+
+  useEffect(()=>{
+    getData(); 
+  },[getData]);  
 
   return (
     <Box

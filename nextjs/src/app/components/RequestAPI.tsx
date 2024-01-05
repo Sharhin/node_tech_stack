@@ -6,7 +6,7 @@ export type RequestApiArgsType = {
   method: RequestApiMethodType,
 }
 
-type JSONValue =
+export type JSONValue =
   | string
   | number
   | boolean

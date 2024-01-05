@@ -36,8 +36,8 @@ export const NewsList = (props:NewsListProps)=>{
       name: test
       <div>
         {news.map(newsEntry=>(
-          <NewsListItem news={newsEntry} />
-        ))}
+          <NewsListItem key={newsEntry.id} news={newsEntry} />
+        ))} 
       </div>
     </div>
   </>
