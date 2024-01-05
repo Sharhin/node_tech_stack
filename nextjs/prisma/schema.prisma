@@ -14,3 +14,15 @@ model todo {
   description  String?
 	users_id Int
 }
+
+model news {
+  id Int @id @default(autoincrement())
+  name String
+  description String?
+}
+
+model news_category {
+  id Int @id @default(autoincrement())
+  name String
+  description String?
+}

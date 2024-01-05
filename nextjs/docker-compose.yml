@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  nextjsdb:
+    container_name: nextjsdb
+    image: postgres
+    restart: always
+    ports:
+      - 54322:5432
+    environment:
+      POSTGRES_USER: nextjs
+      POSTGRES_PASSWORD: nextjs
+      POSTGRES_DB: nextjs  
+    volumes:
+      - ./data/default.sql:/docker-entrypoint-initdb.d/db.sql
+      - nextjs-db-data:/var/lib/postgresql/data
+
+  nextjsapp:
+    container_name: nextjsapp
+    build:
+      dockerfile: Dockerfile
+      context: "./"
+    ports:
+      - 3002:3000  
+    depends_on:
+      - nextjsdb
+
+volumes:
+  nextjs-db-data:
+  mongodb-dev:

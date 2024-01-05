@@ -9,9 +9,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  console.log("route init");
   const { title, description } = await request.json();
-  console.log("route 2", title, description);
   const prisma = new PrismaClient();
 
   const newTask = await prisma.todo.create({

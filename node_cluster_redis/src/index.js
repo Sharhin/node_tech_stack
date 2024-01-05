@@ -21,9 +21,12 @@ else {
   const redis = require('redis');
   const {default: RedisStore} = require('connect-redis');
 
-  console.log("RedisStore",RedisStore)
-
   const app = express();
+
+  const bodyParser = require('body-parser')
+  app.use(bodyParser.urlencoded({ extended: false }))
+  app.use(bodyParser.json())
+
   
   const redisClient = redis.createClient({
     host: 'localhost',
@@ -45,7 +48,7 @@ else {
 
   let redisStore = new RedisStore({
     client: redisClient,
-    prefix: "myapp:",
+    prefix: "session:",
   })
 
 
@@ -62,7 +65,9 @@ else {
       req.session.views = 0;
    
     next();
-  })
+  });
+
+  require("./redisRouteCRUD")(app,redisClient);
   
   app.get("/",(req,res)=>{
     req.session.views += 1;
