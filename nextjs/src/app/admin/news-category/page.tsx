@@ -26,21 +26,22 @@ export default function NewsAdminPage(){
   const [deleteModalID, setDeleteModalID] = useState<number>();
 
   const getData = useCallback(async ()=>{
-    const response = await requestApi({url: '/api/news',method:"GET"});
+    const response = await requestApi({url: '/api/news-category',method:"GET"});
     const rows = await response.json();
     setRows(rows);
   },[]);
-  const openDeleteModal = useCallback((id)=>{
+  const openDeleteModal = useCallback((id:number)=>{
     setDeleteModalOpen(true);
     setDeleteModalID(id)
   },[setDeleteModalOpen])
 
   const deleteNews = useCallback(async ()=>{
-    const response = await requestApi({url: `/api/news/${deleteModalID}`,method:"DELETE"});
+    const response = await requestApi({url: `/api/news-category/${deleteModalID}`,method:"DELETE"});
 
     setRows(rows.filter( row => {
       return row.id !== deleteModalID
     }))
+
     closeDeleteModal();
   },[deleteModalID,setDeleteModalID]) 
 
@@ -58,7 +59,7 @@ export default function NewsAdminPage(){
     <Box
       padding={"20px"}
     >
-      <Link href="/admin/news/add">
+      <Link href="/admin/news-category/add">
         <Button variant="contained">Add</Button> 
       </Link>
     <TableContainer component={Paper}>
@@ -84,7 +85,7 @@ export default function NewsAdminPage(){
                 {index+1}
               </TableCell>
               <TableCell align="left">
-                <Link href={`/admin/news/${row.id}`}>
+                <Link href={`/admin/news-category/${row.id}`}>
                 {row.name}
                 </Link>
               </TableCell>

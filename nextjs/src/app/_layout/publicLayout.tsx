@@ -7,7 +7,6 @@ export default async function PublicLayout({
 }: {
   children: React.ReactNode
 }) {
-  console.log("co?")
   return (
     <div className={styles.main}>
       <Header />

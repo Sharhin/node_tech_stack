@@ -43,7 +43,7 @@ export const mainListItems = (
       },
       {
         name:"news category",
-        href:"/news_category"
+        href:"/news-category"
       },
     ].map((props,index)=><MenuItem key={index} {...props}/>)}
   </>

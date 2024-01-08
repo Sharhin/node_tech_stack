@@ -33,7 +33,6 @@ export default function Todo() {
   async function getData() {
     const response = await requestApi(GetTodoRequest)
     const data = await response.json();
-    console.log(data);
     setList(data);
   }
 

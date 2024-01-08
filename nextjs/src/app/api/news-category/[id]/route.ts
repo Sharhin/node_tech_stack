@@ -12,7 +12,7 @@ export async function PUT(request: Request, context: any) {
   const { params } = context;
   const data = await request.json();
   const prisma = new PrismaClient();
-  const newEntry = await prisma.news.update({
+  const newEntry = await prisma.news_category.update({
     where:{
       id: parseInt(params.id)
     },
@@ -25,7 +25,7 @@ export async function PUT(request: Request, context: any) {
 export async function DELETE(request: Request, context: any) {
   const { params } = context;
   const prisma = new PrismaClient();
-  const deletedEntry = await prisma.news.delete({
+  const deletedEntry = await prisma.news_category.delete({
     where:{
       id: parseInt(params.id)
     }

@@ -25,16 +25,12 @@ interface NewsPageAdminFormType extends NewsPageAdminPropsType {
 export default function NewsPageAdmin(props:NewsPageAdminPropsType){
   const {params} = props;
 
-  const getData = async ()=>{
-    const response = await requestApi({url: `/api/news/${params.id}`,method:"GET"});
-    const rows = await response.json();
-    return rows;
-  }
+  const getData = {}
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     const {id,...rest} = data;
     const formData = rest as JSONValue;
-    requestApi({url:`/api/news/${params.id}`,method:"PUT"},formData)
+    requestApi({url:`/api/news-category/`,method:"POST"},formData)
   };
 
   return <Paper>

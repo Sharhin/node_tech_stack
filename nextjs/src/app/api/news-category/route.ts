@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client'
-import { getNews } from '@/dataStorage/news';
+import { getNewsCategory } from '@/dataStorage/newsCategory';
 
 export async function GET() {
-  const news = await getNews();
+  const news = await getNewsCategory();
   return NextResponse.json(news);
 }
 
@@ -11,7 +11,7 @@ export async function POST(request: Request) {
   const { name, description } = await request.json();
   const prisma = new PrismaClient();
 
-  const newTask = await prisma.news.create({
+  const newTask = await prisma.news_category.create({
     data: {
       name,
       description,

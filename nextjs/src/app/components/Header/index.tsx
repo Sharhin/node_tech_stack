@@ -24,7 +24,6 @@ export default async function Header(){
 
 async function LoginComponent(){
   const session = await getServerSession(authOptions);
-  console.log("session",session)
   if (session?.user) {
     return (
       <>
