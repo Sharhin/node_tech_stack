@@ -30,10 +30,15 @@ export default function NewsAdminPage(){
     const rows = await response.json();
     setRows(rows);
   },[]);
-  const openDeleteModal = useCallback((id)=>{
+  const openDeleteModal = useCallback((id:number)=>{
     setDeleteModalOpen(true);
     setDeleteModalID(id)
   },[setDeleteModalOpen])
+
+  const closeDeleteModal = useCallback(()=>{
+    setDeleteModalOpen(false);
+    setDeleteModalID(undefined);
+  },[setDeleteModalOpen,setDeleteModalID])
 
   const deleteNews = useCallback(async ()=>{
     const response = await requestApi({url: `/api/news/${deleteModalID}`,method:"DELETE"});
@@ -41,13 +46,15 @@ export default function NewsAdminPage(){
     setRows(rows.filter( row => {
       return row.id !== deleteModalID
     }))
-    closeDeleteModal();
-  },[deleteModalID,setDeleteModalID]) 
 
-  const closeDeleteModal = useCallback(()=>{
-    setDeleteModalOpen(false);
-    setDeleteModalID(undefined);
-  },[setDeleteModalOpen])
+    closeDeleteModal();
+  },[
+    closeDeleteModal,
+    deleteModalID,
+    rows
+  ]);
+
+  
 
   useEffect(()=>{
     getData(); 
@@ -125,7 +132,7 @@ export default function NewsAdminPage(){
 type DeletePopupType = {
   onAccept: ()=>void;
   onClose: ()=>void;
-  open: true;
+  open: boolean;
   title: string;
   description: string;
 }

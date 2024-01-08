@@ -1,16 +1,86 @@
 import styles from "./Header.module.sass"
-import { getNewsCategory } from "@/dataStorage/news_category"
+import { getNewsCategory } from "@/dataStorage/newsCategory"
 import Link from "next/link";
 import { getServerSession } from "next-auth/next"
 import authOptions  from "@/app/api/auth/[...nextauth]/auth";
-export default async function Header(){  
 
+import containers from "@/styles/bootstrap/scss/bootstrap.scss" 
+
+import Toolbar from '@mui/material/Toolbar';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import SearchIcon from '@mui/icons-material/Search';
+import Typography from '@mui/material/Typography';
+import MaterialLink from '@mui/material/Link';
+
+interface HeaderProps {
+  sections: ReadonlyArray<{
+    title: string;
+    url: string;
+  }>;
+  title: string;
+}
+
+function HeaderComponent(props: HeaderProps) {
+  const { sections, title } = props;
+
+  return (
+    <>
+      <Toolbar sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Button size="small">Subscribe</Button>
+        <Typography
+          component="h2"
+          variant="h5"
+          color="inherit"
+          align="center"
+          noWrap
+          sx={{ flex: 1 }}
+        >
+          {title}
+        </Typography>
+        <IconButton>
+          <SearchIcon />
+        </IconButton>
+        <Button variant="outlined" size="small">
+          Sign up
+        </Button>
+      </Toolbar>
+      <Toolbar
+        component="nav"
+        variant="dense"
+        sx={{ justifyContent: 'space-between', overflowX: 'auto' }}
+      >
+        {sections.map((section) => (
+          <MaterialLink
+            color="inherit"
+            noWrap
+            key={section.title}
+            variant="body2"
+            href={section.url}
+            sx={{ p: 1, flexShrink: 0 }}
+          >
+            {section.title}
+          </MaterialLink>
+        ))}
+      </Toolbar>
+    </>
+  );
+}
+
+
+export default async function Header(){  
   const newsCategory = await getNewsCategory();
+  const sections = newsCategory.map(category=>{
+    return {title:category.name,url:`/news/${category.id}`}
+  })
 
   return <main>
-    <div className={styles.header__top}>
+    
+    <HeaderComponent title="co" sections={sections} />
+{/* <div className={styles.header__top}>
       <LoginComponent />
-    </div>
+    </div> */}
+    {/* <div className={containers.containers}>hi</div>
     <span className={styles.header__title}>Hello world Header</span>
     <div className={styles.header__menu}>
       {newsCategory.map(category=>{
@@ -18,7 +88,7 @@ export default async function Header(){
           {category.name}
         </Link>
       })}
-    </div>
+    </div> */}
   </main>
 }
 

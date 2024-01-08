@@ -22,7 +22,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 export default function NewsAdminPage(){
   const [rows, setRows] = useState<NewsType[]>([]);
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
   const [deleteModalID, setDeleteModalID] = useState<number>();
 
   const getData = useCallback(async ()=>{
@@ -35,6 +35,12 @@ export default function NewsAdminPage(){
     setDeleteModalID(id)
   },[setDeleteModalOpen])
 
+  const closeDeleteModal = useCallback(()=>{
+    setDeleteModalOpen(false);
+    setDeleteModalID(undefined);
+  },[setDeleteModalOpen])
+
+
   const deleteNews = useCallback(async ()=>{
     const response = await requestApi({url: `/api/news-category/${deleteModalID}`,method:"DELETE"});
 
@@ -43,12 +49,12 @@ export default function NewsAdminPage(){
     }))
 
     closeDeleteModal();
-  },[deleteModalID,setDeleteModalID]) 
+  },[
+    closeDeleteModal,
+    deleteModalID,
+    rows
+  ]) 
 
-  const closeDeleteModal = useCallback(()=>{
-    setDeleteModalOpen(false);
-    setDeleteModalID(undefined);
-  },[setDeleteModalOpen])
 
   useEffect(()=>{
     getData(); 
@@ -69,10 +75,6 @@ export default function NewsAdminPage(){
             <TableCell>No.</TableCell>
             <TableCell>Name</TableCell>
             <TableCell></TableCell>
-            {/* <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell> */}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -93,19 +95,12 @@ export default function NewsAdminPage(){
                 <IconButton 
                   color="error"
                   onClick={()=>{
-                    //TODO: popup
                     openDeleteModal(row.id)
                   }}
                   >
                   <DeleteIcon />
                 </IconButton>
-              
-
               </TableCell>
-              {/* <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell> */}
             </TableRow>
           ))}
         </TableBody>
@@ -126,7 +121,7 @@ export default function NewsAdminPage(){
 type DeletePopupType = {
   onAccept: ()=>void;
   onClose: ()=>void;
-  open: true;
+  open: boolean;
   title: string;
   description: string;
 }
