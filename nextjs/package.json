@@ -7,8 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prisma": "prisma generate",
-    "migration:add": "prisma migrate dev --name"
+    "prisma": "prisma",
+    "prisma:migrate:add": "prisma migrate dev --name"
   },
   "dependencies": {
     "@emotion/react": "^11.11.3",
@@ -18,16 +18,20 @@
     "@prisma/client": "^5.5.2",
     "next": "14.0.2",
     "next-auth": "^4.24.5",
+    "next-swagger-doc": "^0.4.0",
     "prisma": "^5.5.2",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.49.2",
-    "sass": "^1.69.7"
+    "sass": "^1.69.7",
+    "swagger-ui-react": "^5.11.0",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/swagger-ui-react": "^4.18.3",
     "eslint": "^8",
     "eslint-config-next": "14.0.2",
     "typescript": "^5"

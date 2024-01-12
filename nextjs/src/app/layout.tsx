@@ -21,8 +21,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const adminPanel = router.route.startsWith('/admin-panel') ? true : false
-
+  
   const session = await getServerSession();
   return (
     <html lang="en">

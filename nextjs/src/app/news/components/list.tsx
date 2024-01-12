@@ -1,8 +1,15 @@
-import { NewsType } from "@/types/News";
+import { NewsCategoryType, NewsType } from "@/types/News";
 import { PrismaClient } from '@prisma/client'
 import Link from "next/link";
+import NewsItem from "./_list_item";
+
+import styles from "./NewsList.module.sass"
+import { Typography } from "@mui/material";
+
 type NewsListProps = {
+  title?: string
   news: NewsType[]
+  category?: NewsCategoryType
 }
 
 type NewsListItemProps = {
@@ -23,36 +30,32 @@ export async function GET(request: Request, context: any) {
   })
 }
 
-const getData = ()=>{
-
-}
-
 export const NewsList = (props:NewsListProps)=>{
-
-  const {news} = props;
+  const {title = "Any", news, category} = props;
+  const pageTitle = category?.name || title;
 
   return <>
-    <div>
-      name: test
-      <div>
-        {news.map(newsEntry=>(
-          <NewsListItem key={newsEntry.id} news={newsEntry} />
-        ))} 
+    <div className={styles.news__list__container}>
+      <Typography>
+        {pageTitle}
+      </Typography>
+      <br></br>
+      <div className={styles.news__list}>
+        
+        {
+          news?.length 
+            ? news.map(newsEntry=>(
+              <>
+                <NewsItem post={newsEntry}/>
+              </>
+            ))
+            : <div>
+                <h4>No content yet</h4>
+                <p>return  to <Link href="/">homepage</Link></p>
+
+            </div>
+        } 
       </div>
-    </div>
-  </>
-}
-
-const NewsListItem = (props:NewsListItemProps)=>{
-
-  const {news} = props;
-  const {id,name,description} = news;
-
-  return <>
-    <div>
-      <Link href={`/news/${id}`}>{name}</Link>
-      name: {name}
-      description: {description}
     </div>
   </>
 }

@@ -12,6 +12,9 @@ export default async function NewsPage(props:NewsPageType){
   const newsEntry = await getNewsEntry(parseInt(id)) as NewsType
   const {name,description} = newsEntry;
   return <main>
-    {name} {description}
+    <h3>{name}</h3>
+    <div>
+      {description}
+    </div>
   </main>
 }

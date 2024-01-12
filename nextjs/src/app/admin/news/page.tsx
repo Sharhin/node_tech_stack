@@ -74,6 +74,7 @@ export default function NewsAdminPage(){
           <TableRow>
             <TableCell>No.</TableCell>
             <TableCell>Name</TableCell>
+            <TableCell>Category</TableCell>
             <TableCell></TableCell>
             {/* <TableCell align="right">Calories</TableCell>
             <TableCell align="right">Fat&nbsp;(g)</TableCell>
@@ -93,6 +94,11 @@ export default function NewsAdminPage(){
               <TableCell align="left">
                 <Link href={`/admin/news/${row.id}`}>
                 {row.name}
+                </Link>
+              </TableCell>
+              <TableCell align="left">
+                <Link href={`/admin/news/${row.id}`}>
+                {/* {row.news_category.name} */}
                 </Link>
               </TableCell>
               <TableCell align="right">

@@ -1,20 +1,35 @@
 import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client'
-import { getNewsEntry } from '@/dataStorage/news';
+import { getNewsCategoryEntry } from '@/dataStorage/newsCategory';
+import z from "zod";
+
+const schema = z.object({
+  name: z.string(),
+  description: z.string(),
+  news_category_id: z.number(),
+});
+
 
 export async function GET(request: Request, context: any) {
   const { params } = context;
-  const news = await getNewsEntry(parseInt(params.id));
+  const paramId = z.coerce.number().parse(params.id)
+
+  const news = await getNewsCategoryEntry(paramId);
   return NextResponse.json(news);
 }
 
 export async function PUT(request: Request, context: any) {
   const { params } = context;
-  const data = await request.json();
+
+  const paramId = z.coerce.number().parse(params.id)
+
+  const rawData = await request.json();
+  const data = schema.parse(rawData);
+
   const prisma = new PrismaClient();
   const newEntry = await prisma.news_category.update({
     where:{
-      id: parseInt(params.id)
+      id: paramId
     },
     data,
   });

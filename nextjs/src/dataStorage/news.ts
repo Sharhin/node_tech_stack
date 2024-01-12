@@ -1,9 +1,17 @@
 import { PrismaClient } from '@prisma/client'
+import { NewsListSearchParams } from "@/types/News";
 
 
-export async function getNews() {
+export async function getNews(params:NewsListSearchParams) {
   const prisma = new PrismaClient();
-  return await prisma.news.findMany();
+  if(params === undefined)
+    return await prisma.news.findMany();
+
+  return await prisma.news.findMany({
+    where:{
+      news_category_id: params?.category ? parseInt(params?.category) : null
+    }
+  })    
 }
 
 export async function getNewsEntry(id:number) {

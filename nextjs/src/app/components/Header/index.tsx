@@ -4,7 +4,6 @@ import Link from "next/link";
 import { getServerSession } from "next-auth/next"
 import authOptions  from "@/app/api/auth/[...nextauth]/auth";
 
-import containers from "@/styles/bootstrap/scss/bootstrap.scss" 
 
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
@@ -13,11 +12,13 @@ import SearchIcon from '@mui/icons-material/Search';
 import Typography from '@mui/material/Typography';
 import MaterialLink from '@mui/material/Link';
 
+type SectionType = {
+  title: string;
+  url: string;
+}
+
 interface HeaderProps {
-  sections: ReadonlyArray<{
-    title: string;
-    url: string;
-  }>;
+  sections: ReadonlyArray<SectionType>;
   title: string;
 }
 
@@ -25,7 +26,7 @@ function HeaderComponent(props: HeaderProps) {
   const { sections, title } = props;
 
   return (
-    <>
+    <div>
       <Toolbar sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Button size="small">Subscribe</Button>
         <Typography
@@ -50,45 +51,34 @@ function HeaderComponent(props: HeaderProps) {
         variant="dense"
         sx={{ justifyContent: 'space-between', overflowX: 'auto' }}
       >
-        {sections.map((section) => (
-          <MaterialLink
-            color="inherit"
-            noWrap
-            key={section.title}
-            variant="body2"
-            href={section.url}
-            sx={{ p: 1, flexShrink: 0 }}
-          >
-            {section.title}
-          </MaterialLink>
+        {sections.map((section,index) => (
+          <HeaderMainItem key={index} section={section}/>
         ))}
       </Toolbar>
-    </>
+    </div>
   );
 }
 
+function HeaderMainItem(props:{section: SectionType}){
+  const { section } = props;
+  
+  return <Link className={styles.header__menu__link +" "+styles.header__menu__container} href={section.url}>
+    <div className={styles.header__menu__item} style={{background:"#bdb"}}>
+      {section.title}
+    </div>
+  </Link>
+}
 
 export default async function Header(){  
   const newsCategory = await getNewsCategory();
   const sections = newsCategory.map(category=>{
-    return {title:category.name,url:`/news/${category.id}`}
-  })
+    return {title:category.name,url:`/news/?category=${category.id}`}
+  });
+
+  sections.unshift({title:"All", url:`/news`});
 
   return <main>
-    
     <HeaderComponent title="co" sections={sections} />
-{/* <div className={styles.header__top}>
-      <LoginComponent />
-    </div> */}
-    {/* <div className={containers.containers}>hi</div>
-    <span className={styles.header__title}>Hello world Header</span>
-    <div className={styles.header__menu}>
-      {newsCategory.map(category=>{
-        return <Link className={styles.header__menu__item} key={category.id} href={`/news/${category.id}`}>
-          {category.name}
-        </Link>
-      })}
-    </div> */}
   </main>
 }
 

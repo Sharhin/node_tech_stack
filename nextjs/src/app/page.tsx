@@ -1,14 +1,11 @@
-import Image from 'next/image'
 import styles from './page.module.css'
 import Link from 'next/link'
-import { useSession, getSession } from "next-auth/react"
-import { redirect } from 'next/navigation';
-
-import { PrismaClient } from '@prisma/client'
 import PublicLayout from "@/app/_layout/publicLayout";
+import { redirect } from 'next/navigation';
 
 
 export default function Home() {
+  redirect('/news');
 
   return (
     <main className={styles.main}>

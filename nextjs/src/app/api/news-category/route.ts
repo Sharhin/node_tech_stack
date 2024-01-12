@@ -1,6 +1,13 @@
 import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client'
 import { getNewsCategory } from '@/dataStorage/newsCategory';
+import z from "zod";
+
+const schema = z.object({
+  name: z.string(),
+  description: z.string(),
+  news_category_id: z.number(),
+});
 
 export async function GET() {
   const news = await getNewsCategory();
